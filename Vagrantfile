@@ -33,10 +33,12 @@ Vagrant.configure("2") do |config|
 	    config.vm.network "private_network", ip: "192.168.33.10" # Host-Only networking required for nfs shares
 	end
 
-	config.vm.synced_folder "./", "/var/www" #, id: "vagrant-root",  type: "nfs"
+	config.vm.synced_folder "./", "/var/www" , id: "vagrant-root",  type: "nfs", mount_options: ['rw', 'vers=3', 'tcp', 'fsc']  # the fsc is for cachedfilesd
+	#config.vm.synced_folder "./", "/var/www" , id: "vagrant-root",  type: "rsync", rsync__exclude: ".git/"
 
 	config.vm.provider "virtualbox" do |v|
 		v.customize ["modifyvm", :id, "--memory", 2048]
+		v.customize ["modifyvm", :id, "--cpus", 2]
 	end
 
 	puts "Running Lamp Symfony install with mode: " + mode

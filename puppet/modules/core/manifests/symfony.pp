@@ -82,14 +82,14 @@ $ sudo setfacl -dR -m u:"$HTTPDUSER":rwX -m u:`whoami`:rwX app/cache app/logs
 				path => [ "/bin/", "/usr/bin"]
 		}
 
-		exec { 'create_symfony_acme_bundle':
-				cwd => '/var/www/symfony',
-				command =>
-						'php app/console generate:bundle --namespace=Acme/Bundle/BlogBundle --bundle-name=AcmeBlogBundle --no-interaction --structure --dir=src',
-				require =>  Exec['set_symfony_permissions'] ,
-				onlyif => 'php app/console router:match /hello/name | grep -c "None of the routes match"',
-				path => [ "/bin/", "/usr/bin"]
-		}
+		#exec { 'create_symfony_acme_bundle':
+		#		cwd => '/var/www/symfony',
+		#		command =>
+		#				'php app/console generate:bundle --namespace=Acme/Bundle/BlogBundle --bundle-name=AcmeBlogBundle --no-interaction --structure --dir=src',
+		#		require =>  Exec['set_symfony_permissions'] ,
+		#		onlyif => 'php app/console router:match /hello/name | grep -c "None of the routes match"',
+		#		path => [ "/bin/", "/usr/bin"]
+		#}
 
 		exec { 'create symfony db':
 				unless  => '/usr/bin/mysql -uroot symfony',

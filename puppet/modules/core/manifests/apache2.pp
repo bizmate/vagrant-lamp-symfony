@@ -34,13 +34,8 @@ class core::apache2 {
     Options Indexes FollowSymLinks MultiViews
     AllowOverride All
     Require all granted
-  </Directory>
 
-  <Directory /var/www/symfony/web>
-    php_admin_flag engine on
-    Options Indexes FollowSymLinks MultiViews
-    AllowOverride All
-    Require all granted
+    AddType text/css .css
   </Directory>
 
 	ErrorLog /var/log/apache2/error.log

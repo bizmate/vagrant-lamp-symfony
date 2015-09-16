@@ -41,11 +41,37 @@ class core::php5 {
     notify  => Service['apache2']
   }
 
+  package { 'php5-apcu':
+    ensure  => present,
+    require => Exec['apt-update'],
+    notify  => Service['apache2']
+  }
+
 	file {'/etc/php5/cli/conf.d/buffering_settings.ini':
 		ensure => present,
 		owner => root, group => root, mode => 444,
-		content => "output_buffering = On \nzend.enable_gc = 0 \ndate.timezone = Europe/London",
+		content => "output_buffering = On \n
+		zend.enable_gc = 0 \n
+		date.timezone = Europe/London\n
+		realpath_cache_size = 4096k\n
+		realpath_cache_ttl=7200\n
+		apc.enabled=1
+		",
 		require => [ Exec['apt-update-php5'], Package['php5', 'php5-cli'] ],
 		notify  => Service['apache2']
 	}
+
+  file {'/etc/php5/apache2/conf.d/extra_settings.ini':
+    ensure => present,
+    owner => root, group => root, mode => 444,
+    content => "output_buffering = On \n
+		zend.enable_gc = 0 \n
+		date.timezone = Europe/London\n
+		realpath_cache_size = 4096k\n
+		realpath_cache_ttl=7200\n
+		apc.enabled=1
+		",
+    require => [ Exec['apt-update-php5'], Package['php5', 'php5-cli'] ],
+    notify  => Service['apache2']
+  }
 }
